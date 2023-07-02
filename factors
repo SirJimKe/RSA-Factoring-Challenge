@@ -1,23 +1,25 @@
 #!/usr/bin/python3
 """ factorizes all numbers in a file """
-import sys
-import math
+from sys import argv
+from math import sqrt
 
 def factorize(number):
     """ factorizes a number """
-    factors = []
-    i = 2
-    while number:
-        if number % i == 0:
-            factors.append(i)
-            number //= i
-            break
-        else:
-            i += 1
-    if number > 1:
-        factors.append(number)
+    if number % 2 == 0:
+        num = number // 2
+        print(f"{number}={num}*2")
 
-    return factors
+    sqn = int(sqrt(number))
+    if sqn % 2 == 0:
+        sqn += 1
+
+    for i in range(3, sqn + 1, 2):
+        if number % i == 0:
+            num = number // i
+            print(f"{number}={num}*{i}")
+            break
+    if number % i != 0:
+        print(f"{number}={number}*1")
 
 
 def factorize_in_a_file(file_path):
@@ -28,19 +30,14 @@ def factorize_in_a_file(file_path):
             try:
                 number = int(line)
                 factors = factorize(number)
-                if len(factors) == 2:
-                    result = f"{number}={factors[1]}*{factors[0]}"
-                    results.append(result)
             except ValueError:
                 pass
 
     return results
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    if len(argv) < 2:
         print("Please provide a file path")
     else:
-        file_path = sys.argv[1]
+        file_path = argv[1]
         factored_results = factorize_in_a_file(file_path)
-        for result in factored_results:
-            print(result)
