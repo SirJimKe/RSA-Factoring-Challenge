@@ -1,0 +1,46 @@
+#!/usr/bin/python3
+""" factorizes all numbers in a file """
+import sys
+import math
+
+def factorize(number):
+    """ factorizes a number """
+    factors = []
+    i = 2
+    while number:
+        if number % i == 0:
+            factors.append(i)
+            number //= i
+            break
+        else:
+            i += 1
+    if number > 1:
+        factors.append(number)
+
+    return factors
+
+
+def factorize_in_a_file(file_path):
+    """ Factorizes numbers in a file """
+    results = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            try:
+                number = int(line)
+                factors = factorize(number)
+                if len(factors) == 2:
+                    result = f"{number}={factors[1]}*{factors[0]}"
+                    results.append(result)
+            except ValueError:
+                pass
+
+    return results
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Please provide a file path")
+    else:
+        file_path = sys.argv[1]
+        factored_results = factorize_in_a_file(file_path)
+        for result in factored_results:
+            print(result)
